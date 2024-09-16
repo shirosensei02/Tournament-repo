@@ -2,8 +2,14 @@ package cs204.project.tournament;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 public class TournamentController {
     private TournamentService tournamentService;
@@ -30,5 +36,43 @@ public class TournamentController {
     @GetMapping("tournaments/{id}")
     public Tournament getTournament(@PathVariable Long id){
       return null;
+    }
+
+        /**
+     * Add a new book with POST request to "/tournaments"
+     * Note the use of @RequestBody
+     * @param tournament
+     * @return list of all tournament
+     */
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/tournaments")
+    public Tournament addTournament(@RequestBody Tournament tournament){
+        return tournamentService.addTournament(tournament);
+    }
+
+    /**
+     * If there is no tournament with the given "id", throw a TournamentNotFoundException
+     * @param id
+     * @param newTournamentInfo
+     * @return the updated, or newly added tournament
+     */
+    @PutMapping("/tournaments/{id}")
+    public Tournament updateTournament(@PathVariable Long id, @RequestBody Tournament newTournamentInfo){
+        Tournament tournament = tournamentService.updateTournament(id, newTournamentInfo);
+        if(tournament == null) throw new TournamentNotFoundException(id);
+        
+        return tournament;
+    }
+
+    /**
+     * Remove a tournament with the DELETE request to "/tournament/{id}"
+     * If there is no tournament with the given "id", throw a TournamentNotFoundException
+     * 
+     * @param id
+     */
+    @DeleteMapping("/tournaments/{id}")
+    public void deleteTournament(@PathVariable Long id) {
+      if (tournamentService.deleteTournament(id) == 0)
+        throw new TournamentNotFoundException(id);
     }
 }

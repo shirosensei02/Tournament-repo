@@ -1,11 +1,18 @@
 package cs204.project.tournament;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Optional;
 
+import org.springframework.stereotype.Repository;
+
+@Repository
 public class TournamentSQLRepo implements TournamentRepository{
 
   // TODO implement SQL connection here
+
+  // for testing
+  List<Tournament> tournaments = new ArrayList<>();
 
   @Override
   public int deleteById(Long id) {
@@ -16,7 +23,7 @@ public class TournamentSQLRepo implements TournamentRepository{
   @Override
   public List<Tournament> findAll() {
     // TODO Auto-generated method stub
-    return null;
+    return tournaments;
   }
 
   @Override
@@ -28,6 +35,7 @@ public class TournamentSQLRepo implements TournamentRepository{
   @Override
   public Long save(Tournament tournament) {
     // TODO Auto-generated method stub
+    tournaments.add(tournament);
     return null;
   }
 

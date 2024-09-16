@@ -15,13 +15,14 @@ public class TournamentServiceImpl implements TournamentService{
 
     @Override
     public List<Tournament> getTournamentList() {
-      return null;
+      return tournaments.findAll();
     }
 
     @Override
     public Tournament addTournament(Tournament tournament) {
       // TODO Auto-generated method stub
-      return null;
+      tournaments.save(tournament);
+      return tournament;
     }
 
     @Override

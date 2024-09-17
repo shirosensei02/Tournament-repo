@@ -12,7 +12,9 @@ public class Tournament {
     private String region;
     private List<String> playerList = new ArrayList<>();
 
-    public Tournament(String name, String date, int[] rankRange, String status, String region) {
+    // remove id from constructor after adding db
+    public Tournament(Long id, String name, String date, int[] rankRange, String status, String region) {
+      this.id = id; //remove after adding db
       this.name = name;
       this.date = date;
       this.rankRange = rankRange;

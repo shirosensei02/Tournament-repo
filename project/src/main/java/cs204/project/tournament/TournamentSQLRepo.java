@@ -16,13 +16,16 @@ public class TournamentSQLRepo implements TournamentRepository{
 
   @Override
   public int deleteById(Long id) {
-    // TODO Auto-generated method stub
-    return 0;
+    // TODO change to delete from db
+    int size = tournaments.size();
+    tournaments.removeIf(tournament -> tournament.getId() == id);
+    
+    return size - tournaments.size();
   }
 
   @Override
   public List<Tournament> findAll() {
-    // TODO Auto-generated method stub
+    // TODO change to query all from db
     return tournaments;
   }
 
@@ -34,7 +37,8 @@ public class TournamentSQLRepo implements TournamentRepository{
 
   @Override
   public Long save(Tournament tournament) {
-    // TODO Auto-generated method stub
+    // TODO change to add to db
+    // TODO set id into tournament after adding into db
     tournaments.add(tournament);
     return null;
   }

@@ -20,15 +20,13 @@ public class TournamentServiceImpl implements TournamentService{
 
     @Override
     public Tournament addTournament(Tournament tournament) {
-      // TODO Auto-generated method stub
       tournaments.save(tournament);
       return tournament;
     }
 
     @Override
     public int deleteTournament(Long id) {
-      // TODO Auto-generated method stub
-      return 0;
+      return tournaments.deleteById(id);
     }
 
     @Override

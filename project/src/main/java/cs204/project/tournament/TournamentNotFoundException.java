@@ -8,6 +8,6 @@ public class TournamentNotFoundException extends RuntimeException{
   private static final long serialVersionUID = 1L;
 
   TournamentNotFoundException(Long id) {
-        super("Could not find book " + id);
+        super("Could not find tournament " + id);
     }
 }

@@ -3,23 +3,44 @@ package cs204.project.tournament;
 import java.util.ArrayList;
 import java.util.List;
 
+// import javax.persistence.Entity;
+// import javax.persistence.GeneratedValue;
+// import javax.persistence.GenerationType;
+// import javax.persistence.Id;
+
+import jakarta.annotation.Generated;
+
+// @Entity
 public class Tournament {
+    // @Id
+    // @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     private String name;
     private String date;
     private int[] rankRange;
     private String status;
     private String region;
-    private List<String> playerList = new ArrayList<>();
+    private List<String> playerList;
 
-    // remove id from constructor after adding db
     public Tournament(Long id, String name, String date, int[] rankRange, String status, String region) {
-      this.id = id; //remove after adding db
+      this.id = id;
       this.name = name;
       this.date = date;
       this.rankRange = rankRange;
       this.status = status;
       this.region = region;
+      playerList = new ArrayList<>();
+    }
+
+    public Tournament(Long id, String name, String date, int[] rankRange, String status, String region, List<String> playerList) {
+      this.id = id;
+      this.name = name;
+      this.date = date;
+      this.rankRange = rankRange;
+      this.status = status;
+      this.region = region;
+      this.playerList = playerList;
     }
 
     public String getName() {

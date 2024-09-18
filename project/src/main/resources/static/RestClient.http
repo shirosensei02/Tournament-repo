@@ -1,0 +1,22 @@
+###
+GET http://localhost:8080/tournaments
+
+###
+POST http://localhost:8080/tournaments
+Content-Type: application/json
+
+  {
+    "id": 3,
+    "name": "3",
+    "date": "12/12/12",
+    "rankRange": [
+      3,
+      5
+    ],
+    "status": "closed",
+    "region": "east",
+    "playerList": []
+  }
+
+###
+DELETE http://localhost:8080/tournaments/2

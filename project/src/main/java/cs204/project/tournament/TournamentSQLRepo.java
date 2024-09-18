@@ -2,6 +2,7 @@ package cs204.project.tournament;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,13 +53,24 @@ public class TournamentSQLRepo implements TournamentRepository {
             }
           }
 
+          String playerListJson = rs.getString("playerList");
+          List<String> playerList = new ArrayList<>();
+          if (playerListJson != null) {
+            JSONArray playerArray = new JSONArray(playerListJson);
+            for (int i = 0; i < playerArray.length(); i++) {
+              playerList.add(playerArray.getString(i));
+            }
+          }
+
           return new Tournament(
               rs.getLong("id"),
               rs.getString("name"),
               rs.getString("date"),
               rankRange,
               rs.getString("status"),
-              rs.getString("region"));
+              rs.getString("region"),
+              playerList
+            );
         });
   }
 

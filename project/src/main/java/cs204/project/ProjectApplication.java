@@ -10,6 +10,7 @@ import cs204.project.tournament.TournamentRepository;
 
 import java.util.List; 
 import java.util.Arrays;
+import java.time.LocalDate;
 
 @SpringBootApplication
 public class ProjectApplication {
@@ -21,19 +22,19 @@ public class ProjectApplication {
     JdbcTemplate template = ctx.getBean(JdbcTemplate.class);
     // TournamentRepository repo = ctx.getBean(TournamentRepository.class);
 
-    template.execute("CREATE TABLE IF NOT EXISTS tournaments (" + //
-            "id BIGINT AUTO_INCREMENT PRIMARY KEY," + //
-            "name VARCHAR(255) NOT NULL," + //
-            "date DATE NOT NULL," + //
-            "rankRange JSON NOT NULL," + //
-            "status VARCHAR(50) NOT NULL," + //
-            "region VARCHAR(100) NOT NULL," + //
-            "playerList JSON" + //
-            ")");
-
+    template.execute("CREATE TABLE IF NOT EXISTS tournaments (" +
+                 "id BIGSERIAL PRIMARY KEY," +
+                 "name VARCHAR(255) NOT NULL," +
+                 "date DATE NOT NULL," +
+                 "rankRange INT[] NOT NULL," +
+                 "status VARCHAR(50) NOT NULL," +
+                 "region VARCHAR(100) NOT NULL," +
+                 "playerList JSON" +
+                 ")");
+  
     // List<Tournament> listTournaments = Arrays.asList(
-    //   new Tournament("t1", "11/11/11", new int[]{1,2}, "open", "asia"),
-    //   new Tournament("t2", "11/11/11", new int[]{3,6}, "open", "west")
+    //   new Tournament("t1", LocalDate.of(2024, 9, 23), new int[]{1,2}, "open", "asia"),
+    //   new Tournament("t2", LocalDate.of(2024, 9, 23), new int[]{3,6}, "open", "west")
     // );
 
     // listTournaments.forEach(tournament -> {

@@ -73,7 +73,7 @@ public class TournamentController {
      * @param id
      */
     @DeleteMapping("/tournaments/{id}")
-    public void deleteTournament(@PathVariable Long id) {
+    public void deleteTournament(@PathVariable long id) {
       if (tournamentService.deleteTournament(id) == 0)
         throw new TournamentNotFoundException(id);
     }

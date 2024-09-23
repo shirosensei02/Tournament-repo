@@ -2,6 +2,7 @@ package cs204.project.tournament;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDate;
 
 // import javax.persistence.Entity;
 // import javax.persistence.GeneratedValue;
@@ -14,17 +15,16 @@ import jakarta.annotation.Generated;
 public class Tournament {
     // @Id
     // @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private long id;
 
     private String name;
-    private String date;
+    private LocalDate date;
     private int[] rankRange;
     private String status;
     private String region;
-    private List<String> playerList;
+    private List<Player> playerList;
 
-    public Tournament(Long id, String name, String date, int[] rankRange, String status, String region) {
-      this.id = id;
+    public Tournament(String name, LocalDate date, int[] rankRange, String status, String region) {
       this.name = name;
       this.date = date;
       this.rankRange = rankRange;
@@ -33,7 +33,8 @@ public class Tournament {
       playerList = new ArrayList<>();
     }
 
-    public Tournament(Long id, String name, String date, int[] rankRange, String status, String region, List<String> playerList) {
+    public Tournament(long id, String name, LocalDate date, 
+        int[] rankRange, String status, String region, List<Player> playerList) {
       this.id = id;
       this.name = name;
       this.date = date;
@@ -49,10 +50,10 @@ public class Tournament {
     public void setName(String name) {
       this.name = name;
     }
-    public String getDate() {
+    public LocalDate getDate() {
       return date;
     }
-    public void setDate(String date) {
+    public void setDate(LocalDate date) {
       this.date = date;
     }
     public int[] getRankRange() {
@@ -73,10 +74,10 @@ public class Tournament {
     public void setRegion(String region) {
       this.region = region;
     }
-    public List<String> getPlayerList() {
+    public List<Player> getPlayerList() {
       return playerList;
     }
-    public void setPlayerList(List<String> playerList) {
+    public void setPlayerList(List<Player> playerList) {
       this.playerList = playerList;
     }
 

@@ -3,14 +3,22 @@ package cs204.project.tournament;
 import java.util.List;
 import java.util.Optional;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.sql.Statement;
+import java.sql.Array;
+import java.sql.Connection;
+import java.sql.Date;
+// import java.time.LocalDate;
+import java.sql.PreparedStatement;
 
-import org.json.JSONArray;
+// import org.json.JSONArray;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.google.gson.JsonArray;
-
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 
 @Repository
 public class TournamentSQLRepo implements TournamentRepository {
@@ -39,39 +47,41 @@ public class TournamentSQLRepo implements TournamentRepository {
   public List<Tournament> findAll() {
     // TODO change to query all from db
     // return tournaments;
+
     return jdbcTemplate.query("SELECT * from tournaments",
         (rs, rownum) -> {
-          String rankRangeJson = rs.getString("rankRange");
-
-          int[] rankRange = null;
-          if (rankRangeJson != null && !rankRangeJson.isEmpty()) {
-            // Parse JSON array and convert to int[]
-            JSONArray jsonArray = new JSONArray(rankRangeJson);
-            rankRange = new int[jsonArray.length()];
-            for (int i = 0; i < jsonArray.length(); i++) {
-              rankRange[i] = jsonArray.getInt(i);
-            }
-          }
-
-          String playerListJson = rs.getString("playerList");
-          List<String> playerList = new ArrayList<>();
-          if (playerListJson != null) {
-            JSONArray playerArray = new JSONArray(playerListJson);
-            for (int i = 0; i < playerArray.length(); i++) {
-              playerList.add(playerArray.getString(i));
-            }
-          }
-
           return new Tournament(
               rs.getLong("id"),
               rs.getString("name"),
-              rs.getString("date"),
-              rankRange,
+              rs.getDate("date").toLocalDate(),
+              Arrays.stream((Integer[]) rs.getArray("rankRange").getArray()).mapToInt(e -> (int) e).toArray(),
               rs.getString("status"),
               rs.getString("region"),
-              playerList
+              getPlayerListFromJson(rs.getString("playerlist"))
             );
         });
+  }
+
+  private ArrayList<Player> getPlayerListFromJson(String json) {
+    ObjectMapper objectMapper = new ObjectMapper();  // Create an instance of ObjectMapper
+    ArrayList<Player> playerList = new ArrayList<>();
+
+    if (json == null || json.isEmpty()) {
+      return playerList; // Return an empty list if no players
+    }
+
+    try {
+        // Convert JSON string to ArrayList<Player>
+        // Assuming Player class has a default constructor and proper getters/setters
+        Player[] playersArray = objectMapper.readValue(json, Player[].class);
+        for (Player player : playersArray) {
+            playerList.add(player);
+        }
+    } catch (JsonProcessingException e) {
+        e.printStackTrace();  // Handle exception
+    }
+
+    return playerList;  // Return the populated ArrayList
   }
 
   @Override
@@ -85,7 +95,34 @@ public class TournamentSQLRepo implements TournamentRepository {
     // TODO change to add to db
     // TODO set id into tournament after adding into db
     // tournaments.add(tournament);
-    return null;
+    String sql = "INSERT INTO tournaments (name, date, rankRange, status, region) " +
+                     "VALUES (?, ?, ?, ?, ?) RETURNING id";  // RETURNING id
+
+    Date sqlDate = Date.valueOf(tournament.getDate());
+
+    GeneratedKeyHolder holder = new GeneratedKeyHolder();
+    jdbcTemplate.update((Connection conn) -> {
+      PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+      statement.setString(1, tournament.getName());
+      statement.setDate(2, sqlDate);
+      statement.setArray(3, conn.createArrayOf("integer",  Arrays.stream(tournament.getRankRange()).boxed().toArray( Integer[]::new )));
+      statement.setString(4, tournament.getStatus());
+      statement.setString(5, tournament.getRegion());
+      return statement;
+    }, holder);
+
+    Long primaryKey = holder.getKey().longValue();
+    // System.out.println(primaryKey);
+    return primaryKey;
+
+
+    // return jdbcTemplate.queryForObject(sql, new Object[]{
+    //         tournament.getName(),
+    //         sqlDate,
+    //         tournament.getRankRange(),
+    //         tournament.getStatus(),
+    //         tournament.getRegion()
+    // }, Long.class);
   }
 
   @Override

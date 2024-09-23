@@ -24,6 +24,9 @@ public class Tournament {
     private String region;
     private List<Player> playerList;
 
+    public Tournament() {
+    }
+    
     public Tournament(String name, LocalDate date, int[] rankRange, String status, String region) {
       this.name = name;
       this.date = date;

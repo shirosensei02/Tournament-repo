@@ -2,6 +2,7 @@ package cs204.project.tournament;
 
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -31,7 +32,11 @@ public class TournamentServiceImpl implements TournamentService{
 
     @Override
     public Tournament getTournament(Long id) {
-      // TODO Auto-generated method stub
+      Optional<Tournament> t = tournaments.findById(id);
+
+      if (t.isPresent()){
+        return t.get();
+      }
       return null;
     }
 

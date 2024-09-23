@@ -15,6 +15,7 @@ import java.sql.PreparedStatement;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -62,32 +63,24 @@ public class TournamentSQLRepo implements TournamentRepository {
         });
   }
 
-  private ArrayList<Player> getPlayerListFromJson(String json) {
-    ObjectMapper objectMapper = new ObjectMapper();  // Create an instance of ObjectMapper
-    ArrayList<Player> playerList = new ArrayList<>();
-
-    if (json == null || json.isEmpty()) {
-      return playerList; // Return an empty list if no players
-    }
-
-    try {
-        // Convert JSON string to ArrayList<Player>
-        // Assuming Player class has a default constructor and proper getters/setters
-        Player[] playersArray = objectMapper.readValue(json, Player[].class);
-        for (Player player : playersArray) {
-            playerList.add(player);
-        }
-    } catch (JsonProcessingException e) {
-        e.printStackTrace();  // Handle exception
-    }
-
-    return playerList;  // Return the populated ArrayList
-  }
-
   @Override
   public Optional<Tournament> findById(Long id) {
-    // TODO Auto-generated method stub
-    return Optional.empty();
+      try {
+        return jdbcTemplate.queryForObject("select * from tournaments where id = ?",
+            (rs, rowNum) -> Optional.of(new Tournament(
+              rs.getLong("id"),
+              rs.getString("name"),
+              rs.getDate("date").toLocalDate(),
+              Arrays.stream((Integer[]) rs.getArray("rankRange").getArray()).mapToInt(e -> (int) e).toArray(),
+              rs.getString("status"),
+              rs.getString("region"),
+              getPlayerListFromJson(rs.getString("playerlist"))
+            )), id); 
+
+      } catch (EmptyResultDataAccessException e) {
+        // book not found - return an empty object
+        return Optional.empty();
+      }
   }
 
   @Override
@@ -114,15 +107,6 @@ public class TournamentSQLRepo implements TournamentRepository {
     Long primaryKey = holder.getKey().longValue();
     // System.out.println(primaryKey);
     return primaryKey;
-
-
-    // return jdbcTemplate.queryForObject(sql, new Object[]{
-    //         tournament.getName(),
-    //         sqlDate,
-    //         tournament.getRankRange(),
-    //         tournament.getStatus(),
-    //         tournament.getRegion()
-    // }, Long.class);
   }
 
   @Override
@@ -131,4 +115,25 @@ public class TournamentSQLRepo implements TournamentRepository {
     return 0;
   }
 
+  private ArrayList<Player> getPlayerListFromJson(String json) {
+    ObjectMapper objectMapper = new ObjectMapper(); // Create an instance of ObjectMapper
+    ArrayList<Player> playerList = new ArrayList<>();
+
+    if (json == null || json.isEmpty()) {
+      return playerList; // Return an empty list if no players
+    }
+
+    try {
+      // Convert JSON string to ArrayList<Player>
+      // Assuming Player class has a default constructor and proper getters/setters
+      Player[] playersArray = objectMapper.readValue(json, Player[].class);
+      for (Player player : playersArray) {
+        playerList.add(player);
+      }
+    } catch (JsonProcessingException e) {
+      e.printStackTrace(); // Handle exception
+    }
+
+    return playerList; // Return the populated ArrayList
+  }
 }

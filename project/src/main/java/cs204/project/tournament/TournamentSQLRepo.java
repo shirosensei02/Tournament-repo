@@ -109,14 +109,17 @@ public class TournamentSQLRepo implements TournamentRepository {
   @Override
   public int update(Tournament tournament) {
     String sql = "UPDATE tournaments SET name = ?, date = ?, rankRange = ?, status = ?, region = ?, playerList = ? WHERE id = ?";
-    return jdbcTemplate.update(sql, 
-      tournament.getName(),
-      tournament.getDate(),
-      tournament.getRankRange(),
-      tournament.getStatus(),
-      tournament.getStatus(),
-      tournament.getPlayerList()
-      );
+    Date sqlDate = Date.valueOf(tournament.getDate());
+
+    return jdbcTemplate.update((Connection conn) -> {
+      PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+      statement.setString(1, tournament.getName());
+      statement.setDate(2, sqlDate);
+      statement.setArray(3, conn.createArrayOf("integer",  Arrays.stream(tournament.getRankRange()).boxed().toArray( Integer[]::new )));
+      statement.setString(4, tournament.getStatus());
+      statement.setString(5, tournament.getRegion());
+      return statement;
+    });
   }
 
   private ArrayList<Player> getPlayerListFromJson(String json) {

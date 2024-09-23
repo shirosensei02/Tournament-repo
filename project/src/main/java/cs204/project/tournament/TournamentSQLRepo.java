@@ -85,9 +85,6 @@ public class TournamentSQLRepo implements TournamentRepository {
 
   @Override
   public Long save(Tournament tournament) {
-    // TODO change to add to db
-    // TODO set id into tournament after adding into db
-    // tournaments.add(tournament);
     String sql = "INSERT INTO tournaments (name, date, rankRange, status, region) " +
                      "VALUES (?, ?, ?, ?, ?) RETURNING id";  // RETURNING id
 
@@ -111,8 +108,15 @@ public class TournamentSQLRepo implements TournamentRepository {
 
   @Override
   public int update(Tournament tournament) {
-    // TODO Auto-generated method stub
-    return 0;
+    String sql = "UPDATE tournaments SET name = ?, date = ?, rankRange = ?, status = ?, region = ?, playerList = ? WHERE id = ?";
+    return jdbcTemplate.update(sql, 
+      tournament.getName(),
+      tournament.getDate(),
+      tournament.getRankRange(),
+      tournament.getStatus(),
+      tournament.getStatus(),
+      tournament.getPlayerList()
+      );
   }
 
   private ArrayList<Player> getPlayerListFromJson(String json) {

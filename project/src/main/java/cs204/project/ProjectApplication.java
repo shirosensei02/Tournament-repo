@@ -4,6 +4,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.jdbc.core.JdbcTemplate;
+import io.github.cdimascio.dotenv.Dotenv;
 
 import cs204.project.tournament.Tournament;
 import cs204.project.tournament.TournamentRepository;
@@ -16,6 +17,9 @@ import java.time.LocalDate;
 public class ProjectApplication {
 
 	public static void main(String[] args) {
+    Dotenv dotenv = Dotenv.configure().load();
+    System.setProperty("DB_PASSWORD", dotenv.get("DB_PASSWORD"));
+
 
 		ApplicationContext ctx = SpringApplication.run(ProjectApplication.class, args);
 

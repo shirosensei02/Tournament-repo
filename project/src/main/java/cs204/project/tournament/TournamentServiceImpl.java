@@ -21,7 +21,7 @@ public class TournamentServiceImpl implements TournamentService{
 
     @Override
     public Tournament addTournament(Tournament tournament) {
-      tournaments.save(tournament);
+      tournament.setId(tournaments.save(tournament));
       return tournament;
     }
 

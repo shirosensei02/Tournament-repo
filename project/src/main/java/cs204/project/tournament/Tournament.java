@@ -15,30 +15,30 @@ import jakarta.annotation.Generated;
 public class Tournament {
     // @Id
     // @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     private String name;
     private LocalDate date;
     private int[] rankRange;
     private String status;
     private String region;
-    private List<Player> playerList;
+    private List<Long> playerList;
 
     public Tournament() {
     }
     
-    public Tournament(String name, LocalDate date, int[] rankRange, String status, String region) {
+    public Tournament(Long id, String name, LocalDate date, int[] rankRange, String status, String region, List<Long> playerList) {
+      this.id = id;
       this.name = name;
       this.date = date;
       this.rankRange = rankRange;
       this.status = status;
       this.region = region;
-      playerList = new ArrayList<>();
+      this.playerList = playerList;
     }
 
-    public Tournament(long id, String name, LocalDate date, 
-        int[] rankRange, String status, String region, List<Player> playerList) {
-      this.id = id;
+    public Tournament(String name, LocalDate date, 
+        int[] rankRange, String status, String region, List<Long> playerList) {
       this.name = name;
       this.date = date;
       this.rankRange = rankRange;
@@ -77,10 +77,10 @@ public class Tournament {
     public void setRegion(String region) {
       this.region = region;
     }
-    public List<Player> getPlayerList() {
+    public List<Long> getPlayerList() {
       return playerList;
     }
-    public void setPlayerList(List<Player> playerList) {
+    public void setPlayerList(List<Long> playerList) {
       this.playerList = playerList;
     }
 

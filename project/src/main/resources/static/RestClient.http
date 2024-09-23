@@ -6,18 +6,19 @@ POST http://localhost:8080/tournaments
 Content-Type: application/json
 
   {
-    "name": "3",
+    "name": "test2",
     "date": "2024-12-12",
     "rankRange": [
-      3,
-      5
+      4,
+      7
     ],
-    "status": "closed",
-    "region": "east"
+    "status": "open",
+    "region": "west",
+    "playerList": null
   }
 
 ###
 DELETE http://localhost:8080/tournaments/2
 
 ###
-GET http://localhost:8080/tournaments/55
+GET http://localhost:8080/tournaments/1

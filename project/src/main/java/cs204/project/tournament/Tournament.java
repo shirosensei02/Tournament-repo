@@ -47,6 +47,16 @@ public class Tournament {
       this.playerList = playerList;
     }
 
+    public Tournament(String name, LocalDate date,
+        int[] rankRange, String status, String region) {
+      this.name = name;
+      this.date = date;
+      this.rankRange = rankRange;
+      this.status = status;
+      this.region = region;
+      this.playerList = new ArrayList<>();
+    }
+
     public String getName() {
       return name;
     }

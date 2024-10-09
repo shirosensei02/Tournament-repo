@@ -2,18 +2,18 @@
 GET http://localhost:8080/tournaments
 
 ###
-POST http://localhost:8080/tournaments
+POST http://localhost:8082/tournaments
 Content-Type: application/json
 
   {
-    "name": "test2",
-    "date": "2024-12-12",
+    "name": "test5",
+    "date": "2024-09-09",
     "rankRange": [
-      4,
-      7
+      1000,
+      3000
     ],
     "status": "open",
-    "region": "west",
+    "region": "asia",
     "playerList": null
   }
 

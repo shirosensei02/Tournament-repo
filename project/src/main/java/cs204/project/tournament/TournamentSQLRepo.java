@@ -40,12 +40,8 @@ public class TournamentSQLRepo implements TournamentRepository {
 
   @Override
   public int deleteById(Long id) {
-    // TODO change to delete from db
-    // int size = tournaments.size();
-    // tournaments.removeIf(tournament -> tournament.getId() == id);
-
-    // return size - tournaments.size();
-    return 0;
+    String sql = "DELETE FROM tournaments WHERE id = ?";
+    return jdbcTemplate.update(sql, id);
   }
 
   @Override
@@ -61,10 +57,10 @@ public class TournamentSQLRepo implements TournamentRepository {
   public Optional<Tournament> findById(Long id) {
     try {
       return Optional.ofNullable(
-        jdbcTemplate.queryForObject(
-          "SELECT * FROM tournaments WHERE id = ?",
-          (rs, rowNum) -> mapRow(rs, rowNum),
-          id));
+          jdbcTemplate.queryForObject(
+              "SELECT * FROM tournaments WHERE id = ?",
+              (rs, rowNum) -> mapRow(rs, rowNum),
+              id));
 
     } catch (EmptyResultDataAccessException e) {
       // book not found - return an empty object
@@ -109,7 +105,8 @@ public class TournamentSQLRepo implements TournamentRepository {
     });
   }
 
-  public PreparedStatement setDB(Connection conn, PreparedStatement statement, Tournament tournament) throws JsonProcessingException, SQLException {
+  public PreparedStatement setDB(Connection conn, PreparedStatement statement, Tournament tournament)
+      throws JsonProcessingException, SQLException {
     ObjectMapper objectMapper = new ObjectMapper();
     String playerListJson = null;
     if (tournament.getPlayerList() != null) {
@@ -149,13 +146,12 @@ public class TournamentSQLRepo implements TournamentRepository {
 
     // Map the ResultSet data to a Tournament object
     return new Tournament(
-      rs.getLong("id"),
-      rs.getString("name"),
-      rs.getDate("date").toLocalDate(),
-      Arrays.stream((Integer[]) rs.getArray("rankRange").getArray()).mapToInt(e -> (int) e).toArray(),
-      rs.getString("status"),
-      rs.getString("region"),
-      playerList
-    );
+        rs.getLong("id"),
+        rs.getString("name"),
+        rs.getDate("date").toLocalDate(),
+        Arrays.stream((Integer[]) rs.getArray("rankRange").getArray()).mapToInt(e -> (int) e).toArray(),
+        rs.getString("status"),
+        rs.getString("region"),
+        playerList);
   }
 }

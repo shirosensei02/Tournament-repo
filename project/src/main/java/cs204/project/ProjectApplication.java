@@ -9,7 +9,8 @@ import io.github.cdimascio.dotenv.Dotenv;
 import cs204.project.tournament.Tournament;
 import cs204.project.tournament.TournamentRepository;
 
-import java.util.List; 
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.time.LocalDate;
 
@@ -33,12 +34,18 @@ public class ProjectApplication {
                  "rankRange INT[] NOT NULL," +
                  "status VARCHAR(50) NOT NULL," +
                  "region VARCHAR(100) NOT NULL," +
-                 "playerList JSON" +
+                 "playerList JSON," +
+                 "round INT" +
                  ")");
   
+    // List<Long> playerList = new ArrayList<>();
+    // for (int i = 0; i < 32; i++){
+    //   playerList.add((long)i);
+    // }
+
     // List<Tournament> listTournaments = Arrays.asList(
-    //   new Tournament("t1", LocalDate.of(2024, 9, 23), new int[]{1,2}, "open", "asia"),
-    //   new Tournament("t2", LocalDate.of(2024, 9, 23), new int[]{3,6}, "open", "west")
+    //   new Tournament("t1", LocalDate.of(2024, 9, 23), new int[]{1,2}, "Open", "Asia", playerList, 1),
+    //   new Tournament("t2", LocalDate.of(2024, 9, 23), new int[]{3,6}, "Open", "America", playerList, 1)
     // );
 
     // listTournaments.forEach(tournament -> {

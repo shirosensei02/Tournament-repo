@@ -70,8 +70,8 @@ public class TournamentSQLRepo implements TournamentRepository {
 
   @Override
   public Long save(Tournament tournament) {
-    String sql = "INSERT INTO tournaments (name, date, rankRange, status, region, playerList) " +
-        "VALUES (?, ?, ?, ?, ?, ?) RETURNING id"; // RETURNING id
+    String sql = "INSERT INTO tournaments (name, date, rankRange, status, region, playerList, round) " +
+        "VALUES (?, ?, ?, ?, ?, CAST(? AS JSON), ?) RETURNING id"; // RETURNING id
 
     GeneratedKeyHolder holder = new GeneratedKeyHolder();
     jdbcTemplate.update((Connection conn) -> {
@@ -91,7 +91,7 @@ public class TournamentSQLRepo implements TournamentRepository {
 
   @Override
   public int update(Tournament tournament) {
-    String sql = "UPDATE tournaments SET name = ?, date = ?, rankRange = ?, status = ?, region = ?, playerList = ? WHERE id = ?";
+    String sql = "UPDATE tournaments SET name = ?, date = ?, rankRange = ?, status = ?, region = ?, playerList = CAST(? AS JSON), round = ? WHERE id = ?";
 
     return jdbcTemplate.update((Connection conn) -> {
       PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -100,12 +100,12 @@ public class TournamentSQLRepo implements TournamentRepository {
       } catch (JsonProcessingException e) {
         e.printStackTrace();
       }
-      statement.setLong(7, tournament.getId());
+      statement.setLong(8, tournament.getId());
       return statement;
     });
   }
 
-  public PreparedStatement setDB(Connection conn, PreparedStatement statement, Tournament tournament)
+  private PreparedStatement setDB(Connection conn, PreparedStatement statement, Tournament tournament)
       throws JsonProcessingException, SQLException {
     ObjectMapper objectMapper = new ObjectMapper();
     String playerListJson = null;
@@ -123,8 +123,9 @@ public class TournamentSQLRepo implements TournamentRepository {
     if (playerListJson != null) {
       statement.setString(6, playerListJson);
     } else {
-      statement.setNull(6, java.sql.Types.OTHER); // Use the appropriate SQL type if needed
+      statement.setNull(6, java.sql.Types.OTHER);
     }
+    statement.setInt(7, tournament.getRound());
     return statement;
   }
 
@@ -152,6 +153,7 @@ public class TournamentSQLRepo implements TournamentRepository {
         Arrays.stream((Integer[]) rs.getArray("rankRange").getArray()).mapToInt(e -> (int) e).toArray(),
         rs.getString("status"),
         rs.getString("region"),
-        playerList);
+        playerList,
+        rs.getInt("round"));
   }
 }

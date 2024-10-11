@@ -44,6 +44,7 @@ public class TournamentController {
   }
 
   // Does updateTournament throw anything
+  @ResponseStatus(HttpStatus.OK)
   @PutMapping("/tournaments/{id}")
   public Tournament updateTournament(@PathVariable Long id, @RequestBody Tournament newTournamentInfo) {
     Tournament tournament = tournamentService.updateTournament(id, newTournamentInfo);
@@ -62,7 +63,7 @@ public class TournamentController {
   }
 
   @ResponseStatus(HttpStatus.BAD_REQUEST)
-  @PutMapping("/tournaments/{id}/player/{pID}")
+  @PutMapping("/tournaments/{id}/player/{pID}/join")
   public Long joinTournament(@PathVariable long id, @PathVariable long pId /* , @RequestBody Tournament tournament */) {
 
     Tournament tournament = tournamentService.getTournament(id);
@@ -88,7 +89,7 @@ public class TournamentController {
   }
 
   @ResponseStatus(HttpStatus.BAD_REQUEST)
-  @PutMapping("/tournaments/{id}/player/{pID}")
+  @PutMapping("/tournaments/{id}/player/{pID}/leave")
   public Long leaveTournament(@PathVariable long id, @PathVariable long pId /* , @RequestBody Tournament tournament */) {
 
     Tournament tournament = tournamentService.getTournament(id);

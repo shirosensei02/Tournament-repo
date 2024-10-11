@@ -28,7 +28,7 @@ public interface TournamentRepository extends JpaRepository<Tournament, Long>{
 
     public Optional<Tournament> findTournamentByDate(LocalDate date);
     public Optional<Tournament> findTournamentByName(String name);
-    public Optional<Tournament> findTournamentByStatus(Boolean status);
+    public Optional<Tournament> findTournamentByStatus(Tournament.Status status);
 
     // @Query("SELECT t FROM Tournament t WHERE t.id = :id")
     // Uhh idt can actually do this, cause in SQL the range is saved as a JSON string. 

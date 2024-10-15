@@ -30,9 +30,9 @@ public class TournamentController {
       return tournamentService.getTournamentList();
     }
 
-    @GetMapping("/tournaments/available")
-    public List<Tournament> getTournamentsUser() {
-      return tournamentService.getAvailableTournaments();
+    @GetMapping("/tournaments/available/{pid}")
+    public List<Tournament> getTournamentsUser(@PathVariable Long pid) {
+      return tournamentService.getAvailableTournaments(pid);
     }
   
     /**

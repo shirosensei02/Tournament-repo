@@ -21,12 +21,13 @@ public class TournamentServiceImpl implements TournamentService {
   }
 
   @Override
-  public List<Tournament> getAvailableTournaments(){
+  public List<Tournament> getAvailableTournaments(Long pid){
         List<Tournament> tournamentsList = tournaments.findAll();
         Iterator<Tournament> iterator = tournamentsList.iterator();
         while (iterator.hasNext()) {
             Tournament tournament = iterator.next();
-            if (tournament.getPlayerList().size() == 32) {
+            List<Long> playerList = tournament.getPlayerList();
+            if (playerList.size() == 32 || playerList.contains(pid)) {
                 iterator.remove();
             }
         }

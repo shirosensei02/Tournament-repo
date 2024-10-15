@@ -6,7 +6,7 @@ public interface TournamentService {
     List<Tournament> getTournamentList();
     Tournament getTournament(Long id);
 
-    List<Tournament> getAvailableTournaments();
+    List<Tournament> getAvailableTournaments(Long pid);
     List<Tournament> getPlayerJoinedTournaments(Long pid);
     void playerJoinTournament(Long tid, Long pid);
 

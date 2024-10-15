@@ -74,8 +74,20 @@ public class TournamentController {
      * @param id
      */
     @DeleteMapping("/tournaments/{id}")
-    public void deleteTournament(@PathVariable long id) {
+    public void deleteTournament(@PathVariable Long id) {
       if (tournamentService.deleteTournament(id) == 0)
         throw new TournamentNotFoundException(id);
+    }
+
+    @PostMapping("/tournaments/{id}/playerlist/{id2}")
+    public void joinTournament(@PathVariable Long id, @PathVariable Long id2){
+      Tournament tournament = tournamentService.getTournament(id);
+
+      List<Long> newPlayerList = tournament.getPlayerList();
+      newPlayerList.add(id2);
+
+      tournament.setPlayerList(newPlayerList);
+
+      tournamentService.updateTournament(id, tournament);
     }
 }

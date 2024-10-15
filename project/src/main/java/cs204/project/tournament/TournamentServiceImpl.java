@@ -1,5 +1,6 @@
 package cs204.project.tournament;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +18,47 @@ public class TournamentServiceImpl implements TournamentService {
   @Override
   public List<Tournament> getTournamentList() {
     return tournaments.findAll();
+  }
+
+  @Override
+  public List<Tournament> getAvailableTournaments(){
+        List<Tournament> tournamentsList = tournaments.findAll();
+        Iterator<Tournament> iterator = tournamentsList.iterator();
+        while (iterator.hasNext()) {
+            Tournament tournament = iterator.next();
+            if (tournament.getPlayerList().size() == 32) {
+                iterator.remove();
+            }
+        }
+        return tournamentsList; 
+  }
+
+  @Override
+  public void playerJoinTournament(Long tid, Long pid){
+    //Tournament tournament = tournamentService.getTournament(id);
+
+    Optional<Tournament> t = tournaments.findById(tid);
+    if (t.isPresent()) {
+      Tournament tournament = t.get();
+      List<Long> newPlayerList = tournament.getPlayerList();
+      newPlayerList.add(pid);
+      tournament.setPlayerList(newPlayerList);
+      tournaments.update(tournament);
+      //t.updateTournament(id, tournament);
+    }
+  }
+  
+  @Override
+  public List<Tournament> getPlayerJoinedTournaments(Long pid){
+    List<Tournament> tournamentsList = tournaments.findAll();
+    Iterator<Tournament> iterator = tournamentsList.iterator();
+    while (iterator.hasNext()) {
+        Tournament tournament = iterator.next();
+        if (!tournament.getPlayerList().contains(pid)) {
+            iterator.remove();
+        }
+    }
+    return tournamentsList;
   }
 
   @Override

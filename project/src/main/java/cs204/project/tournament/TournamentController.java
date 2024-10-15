@@ -1,6 +1,7 @@
 package cs204.project.tournament;
 
 import java.util.List;
+import java.util.Iterator;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,6 +30,11 @@ public class TournamentController {
       return tournamentService.getTournamentList();
     }
 
+    @GetMapping("/tournaments/available")
+    public List<Tournament> getTournamentsUser() {
+      return tournamentService.getAvailableTournaments();
+    }
+  
     /**
      * Search tournament with given id
      * if not found, throw TournamentNotFoundException
@@ -40,6 +46,7 @@ public class TournamentController {
       return tournamentService.getTournament(id);
     }
 
+
         /**
      * Add a new tournament with POST request to "/tournaments"
      * Note the use of @RequestBody
@@ -49,7 +56,6 @@ public class TournamentController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/tournaments")
     public Tournament addTournament(@RequestBody Tournament tournament){
-        System.out.println(tournament);
         return tournamentService.addTournament(tournament);
     }
 
@@ -79,15 +85,16 @@ public class TournamentController {
         throw new TournamentNotFoundException(id);
     }
 
-    @PostMapping("/tournaments/{id}/playerlist/{id2}")
+    @PostMapping("/tournaments/{id}/player/{id2}")
     public void joinTournament(@PathVariable Long id, @PathVariable Long id2){
-      Tournament tournament = tournamentService.getTournament(id);
-
-      List<Long> newPlayerList = tournament.getPlayerList();
-      newPlayerList.add(id2);
-
-      tournament.setPlayerList(newPlayerList);
-
-      tournamentService.updateTournament(id, tournament);
+      tournamentService.playerJoinTournament(id, id2);
     }
+
+    //Get All Users Tournaments
+    @GetMapping("/tournaments/player/{pid}")
+    public List<Tournament> getPlayerTournaments(@PathVariable Long pid){
+        return tournamentService.getPlayerJoinedTournaments(pid);
+    }
+    
+
 }

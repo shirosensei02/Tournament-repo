@@ -6,23 +6,22 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.jdbc.core.JdbcTemplate;
 import io.github.cdimascio.dotenv.Dotenv;
 
-import cs204.project.tournament.Tournament;
-import cs204.project.tournament.TournamentRepository;
+import cs204.project.tournament.T
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Arrays;
+  
+    port java.util.List;
+    port java.util.ArrayList;
+import .util.Arrays;
 import java.time.LocalDate;
 
-@SpringBootApplication
-public class ProjectApplication {
+    blic class ProjectApplication {
 
-	public static void main(String[] args) {
-    Dotenv dotenv = Dotenv.configure().load();
+    ublic static void main(String[] args) {
+    // 
+     Dotenv dotenv = Dotenv.configure().load();
     System.setProperty("DB_PASSWORD", dotenv.get("DB_PASSWORD"));
 
-
-		ApplicationContext ctx = SpringApplication.run(ProjectApplication.class, args);
+nContext ctx = SpringApplication.run(ProjectApplication.class, args);
 
     JdbcTemplate template = ctx.getBean(JdbcTemplate.class);
     // TournamentRepository repo = ctx.getBean(TournamentRepository.class);
@@ -39,13 +38,13 @@ public class ProjectApplication {
                  ")");
   
     // List<Long> playerList = new ArrayList<>();
-    // for (int i = 0; i < 32; i++){
+    // for (int i = 1; i <= 32; i++){
     //   playerList.add((long)i);
     // }
 
     // List<Tournament> listTournaments = Arrays.asList(
-    //   new Tournament("t1", LocalDate.of(2024, 9, 23), new int[]{1,2}, "Open", "Asia", playerList, 1),
-    //   new Tournament("t2", LocalDate.of(2024, 9, 23), new int[]{3,6}, "Open", "America", playerList, 1)
+    //   new Tournament("t1", LocalDate.of(2024, 9, 23), new int[]{0,2000}, "Open", "Asia", playerList, 1),
+    //   new Tournament("t2", LocalDate.of(2024, 9, 23), new int[]{0,1000}, "Open", "America", playerList, 1)
     // );
 
     // listTournaments.forEach(tournament -> {

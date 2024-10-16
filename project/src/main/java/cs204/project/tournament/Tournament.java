@@ -23,7 +23,7 @@ public class Tournament {
   private String status;
   private String region;
   private List<Long> playerList;
-  private int round;
+  private int round = 1;
 
   public Tournament() {
   }
@@ -59,7 +59,6 @@ public class Tournament {
     this.status = status;
     this.region = region;
     this.playerList = new ArrayList<>();
-    this.round = 1;
   }
 
   public String getName() {

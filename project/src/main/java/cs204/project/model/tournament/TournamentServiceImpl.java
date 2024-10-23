@@ -21,6 +21,7 @@ public class TournamentServiceImpl implements TournamentService{
     }
 
     public List<Tournament> getTournamentList() {
+      // sort based on date
       return tournaments.findAll();
     }
     

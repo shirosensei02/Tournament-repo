@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import io.github.cdimascio.dotenv.Dotenv;
 
 import cs204.project.tournament.TournamentRepository;
+import cs204.project.tournament.Tournament;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -17,10 +18,6 @@ import java.time.LocalDate;
 public class ProjectApplication {
 
   public static void main(String[] args) {
-    //
-    Dotenv dotenv = Dotenv.configure().load();
-    System.setProperty("DB_PASSWORD", dotenv.get("DB_PASSWORD"));
-
     ApplicationContext ctx = SpringApplication.run(ProjectApplication.class, args);
 
     JdbcTemplate template = ctx.getBean(JdbcTemplate.class);

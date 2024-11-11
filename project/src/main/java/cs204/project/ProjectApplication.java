@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.jdbc.core.JdbcTemplate;
 import io.github.cdimascio.dotenv.Dotenv;
 
-import cs204.project.tournament.TournamentRepository;
-import cs204.project.tournament.Tournament;
+import cs204.project.Repo.TournamentRepository;
+import cs204.project.Entity.Tournament;
 
 import java.util.List;
 import java.util.ArrayList;

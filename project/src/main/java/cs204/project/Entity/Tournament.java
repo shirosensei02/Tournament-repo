@@ -1,4 +1,4 @@
-package cs204.project.tournament;
+package cs204.project.Entity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +10,7 @@ import java.time.LocalDate;
 // import javax.persistence.Id;
 
 import jakarta.annotation.Generated;
+import jakarta.validation.constraints.NotNull;
 
 // @Entity
 public class Tournament {
@@ -17,11 +18,21 @@ public class Tournament {
   // @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
+  @NotNull(message= "name: not null")
   private String name;
+
+  @NotNull(message = "date: not null")
   private LocalDate date;
+
+  @NotNull(message = "rankRange: not null")
   private int[] rankRange;
+
+  @NotNull(message = "status: not null")
   private String status;
+
+  @NotNull(message = "region: not null")
   private String region;
+
   private List<Long> playerList;
   private int round = 1;
 

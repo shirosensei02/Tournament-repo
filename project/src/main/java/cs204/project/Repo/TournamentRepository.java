@@ -1,7 +1,8 @@
-package cs204.project.tournament;
+package cs204.project.Repo;
 
 import java.util.List;
 import java.util.Optional;
+import cs204.project.Entity.Tournament;
 
 public interface TournamentRepository {
     Long save(Tournament tournament);

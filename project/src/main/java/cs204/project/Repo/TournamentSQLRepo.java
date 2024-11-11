@@ -1,5 +1,6 @@
-package cs204.project.tournament;
+package cs204.project.Repo;
 
+import cs204.project.Entity.Tournament;
 import java.util.List;
 import java.util.Optional;
 import java.util.ArrayList;
@@ -28,7 +29,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 @Repository
 public class TournamentSQLRepo implements TournamentRepository {
 
-  // TODO implement SQL connection here
   @Autowired
   private JdbcTemplate jdbcTemplate;
   // for testing
@@ -46,11 +46,8 @@ public class TournamentSQLRepo implements TournamentRepository {
 
   @Override
   public List<Tournament> findAll() {
-    // TODO change to query all from db
-    // return tournaments;
-
     return jdbcTemplate.query("SELECT * from tournaments",
-        (rs, rownum) -> mapRow(rs, rownum));
+      (rs, rownum) -> mapRow(rs, rownum));
   }
 
   @Override
@@ -129,7 +126,7 @@ public class TournamentSQLRepo implements TournamentRepository {
     return statement;
   }
 
-  public Tournament mapRow(ResultSet rs, int rowNum) throws SQLException {
+  public Tournament mapRow(ResultSet rs, int rowNum) throws SQLException{
     ObjectMapper objectMapper = new ObjectMapper(); // Jackson ObjectMapper
 
     // Retrieve the playerList JSON
@@ -140,7 +137,7 @@ public class TournamentSQLRepo implements TournamentRepository {
       try {
         Long[] playerArray = objectMapper.readValue(playerListJson, Long[].class);
         playerList = new ArrayList<>(List.of(playerArray)); // Convert array to ArrayList
-      } catch (Exception e) {
+      } catch (JsonProcessingException e) {
         e.printStackTrace();
       }
     }

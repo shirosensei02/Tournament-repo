@@ -14,9 +14,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import cs204.project.tournament.Tournament;
-import cs204.project.tournament.TournamentRepository;
-import cs204.project.tournament.TournamentServiceImpl;
+import cs204.project.Entity.Tournament;
+import cs204.project.Repo.TournamentRepository;
+import cs204.project.Service.TournamentServiceImpl;
 
 
 

@@ -9,14 +9,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-
+ 
   @ExceptionHandler(TournamentNotFoundException.class)
   @ResponseStatus(HttpStatus.NOT_FOUND)
-  public ResponseEntity<String> handleTournamentNotFound(TournamentNotFoundException e, int id) {
-      String errorMessage = "Tournament with ID " + id + " not found: " + e.getMessage();
-      return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
+  public ResponseEntity<String> handleTournamentNotFound(TournamentNotFoundException e) {
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
   }
-  
+
   @ExceptionHandler(Exception.class)
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   public ResponseEntity<String> handleOtherErrors(Exception e, Model model) {

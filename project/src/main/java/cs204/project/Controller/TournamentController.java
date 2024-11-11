@@ -13,9 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import cs204.project.Entity.Tournament;
-import cs204.project.Exception.GlobalExceptionHandler;
+import cs204.project.Exception.*;
 import cs204.project.Repo.TournamentRepository;
 import cs204.project.Service.TournamentService;
+
 
 @RestController
 public class TournamentController {
@@ -47,7 +48,11 @@ public class TournamentController {
      */
     @GetMapping("tournaments/{id}")
     public Tournament getTournament(@PathVariable Long id){
-      return tournamentService.getTournament(id);
+      Tournament tournament = tournamentService.getTournament(id);
+      if (tournament  == null){
+        throw new TournamentNotFoundException(id);
+      } 
+      return tournament;
     }
 
 

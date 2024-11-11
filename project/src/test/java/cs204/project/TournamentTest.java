@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
-import cs204.project.tournament.Tournament;
+import cs204.project.Entity.Tournament;
 
 public class TournamentTest {
 

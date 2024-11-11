@@ -28,8 +28,8 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-import cs204.project.tournament.Tournament;
-import cs204.project.tournament.TournamentSQLRepo;
+import cs204.project.Entity.Tournament;
+import cs204.project.Repo.TournamentSQLRepo;
 
 @SpringBootTest
 @SpringJUnitConfig

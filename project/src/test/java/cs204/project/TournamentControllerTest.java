@@ -19,10 +19,10 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import cs204.project.tournament.Tournament;
-import cs204.project.tournament.TournamentController;
-import cs204.project.tournament.TournamentService;
-import cs204.project.tournament.TournamentNotFoundException;
+import cs204.project.Entity.Tournament;
+import cs204.project.Controller.TournamentController;
+import cs204.project.Service.TournamentService;
+import cs204.project.Exception.TournamentNotFoundException;
 
 @WebMvcTest(TournamentController.class)
 public class TournamentControllerTest {

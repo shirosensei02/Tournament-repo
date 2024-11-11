@@ -1,10 +1,13 @@
-package cs204.project.tournament;
+package cs204.project.Service;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import cs204.project.Entity.Tournament;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
+import jakarta.validation.Valid;
 
 @Service
 public class TournamentServiceImpl implements TournamentService {
@@ -63,7 +66,7 @@ public class TournamentServiceImpl implements TournamentService {
   }
 
   @Override
-  public Tournament addTournament(Tournament tournament) {
+  public Tournament addTournament(@Valid @RequestBody Tournament tournament) {
     tournament.setId(tournaments.save(tournament));
     return tournament;
   }
@@ -84,8 +87,7 @@ public class TournamentServiceImpl implements TournamentService {
   }
 
   @Override
-  public Tournament updateTournament(Long id, Tournament tournament) {
-    // TODO Auto-generated method stub
+  public Tournament updateTournament(Long id, @Valid @RequestBody Tournament tournament) {
     if (tournaments.update(tournament) > 0) {
       return tournament;
     }

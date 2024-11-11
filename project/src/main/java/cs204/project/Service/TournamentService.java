@@ -1,6 +1,7 @@
-package cs204.project.tournament;
+package cs204.project.Service;
 
 import java.util.List;
+import cs204.project.Entity.Tournament;
 
 public interface TournamentService {
     List<Tournament> getTournamentList();

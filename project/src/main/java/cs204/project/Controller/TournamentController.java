@@ -1,4 +1,4 @@
-package cs204.project.tournament;
+package cs204.project.Controller;
 
 import java.util.List;
 import java.util.Iterator;
@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import cs204.project.Entity.Tournament;
+import cs204.project.Exception.GlobalExceptionHandler;
+import cs204.project.Repo.TournamentRepository;
+import cs204.project.Service.TournamentService;
 
 @RestController
 public class TournamentController {

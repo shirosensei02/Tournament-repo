@@ -174,4 +174,79 @@ public class TournamentSQLRepoTest {
         assertEquals("Asia", result.getRegion());
         assertEquals(1, result.getRound());
     }
+
+    @Test
+    void save_ShouldHandleNullPlayerList() throws SQLException {
+        // Create tournament with null playerList
+        testTournament.setPlayerList(null);
+        
+        when(jdbcTemplate.update(any(PreparedStatementCreator.class), any(GeneratedKeyHolder.class)))
+            .thenAnswer(invocation -> {
+                GeneratedKeyHolder keyHolder = invocation.getArgument(1);
+                Field keyField = GeneratedKeyHolder.class.getDeclaredField("keyList");
+                keyField.setAccessible(true);
+                keyField.set(keyHolder, Arrays.asList(Map.of("", 1L)));
+                return 1;
+            });
+
+        Long result = tournamentRepo.save(testTournament);
+        assertNotNull(result);
+    }
+
+    @Test
+    void mapRow_ShouldHandleNullPlayerList() throws SQLException {
+        // Basic mocking
+        when(resultSet.getLong("id")).thenReturn(1L);
+        when(resultSet.getString("name")).thenReturn("Test Tournament");
+        when(resultSet.getDate("date")).thenReturn(java.sql.Date.valueOf(LocalDate.now()));
+        Array sqlArray = mock(Array.class);
+        when(sqlArray.getArray()).thenReturn(new Integer[]{1000, 2000});
+        when(resultSet.getArray("rankRange")).thenReturn(sqlArray);
+        when(resultSet.getString("status")).thenReturn("Open");
+        when(resultSet.getString("region")).thenReturn("Asia");
+        when(resultSet.getString("playerList")).thenReturn(null); // Test null playerList
+        when(resultSet.getInt("round")).thenReturn(1);
+
+        Tournament result = tournamentRepo.mapRow(resultSet, 1);
+        assertNotNull(result);
+        assertTrue(result.getPlayerList().isEmpty());
+    }
+
+    @Test
+    void mapRow_ShouldHandleEmptyPlayerList() throws SQLException {
+        // Basic mocking
+        when(resultSet.getLong("id")).thenReturn(1L);
+        when(resultSet.getString("name")).thenReturn("Test Tournament");
+        when(resultSet.getDate("date")).thenReturn(java.sql.Date.valueOf(LocalDate.now()));
+        Array sqlArray = mock(Array.class);
+        when(sqlArray.getArray()).thenReturn(new Integer[]{1000, 2000});
+        when(resultSet.getArray("rankRange")).thenReturn(sqlArray);
+        when(resultSet.getString("status")).thenReturn("Open");
+        when(resultSet.getString("region")).thenReturn("Asia");
+        when(resultSet.getString("playerList")).thenReturn(""); // Test empty playerList
+        when(resultSet.getInt("round")).thenReturn(1);
+
+        Tournament result = tournamentRepo.mapRow(resultSet, 1);
+        assertNotNull(result);
+        assertTrue(result.getPlayerList().isEmpty());
+    }
+
+    @Test
+    void mapRow_ShouldHandleJsonProcessingException() throws SQLException {
+        // Basic mocking
+        when(resultSet.getLong("id")).thenReturn(1L);
+        when(resultSet.getString("name")).thenReturn("Test Tournament");
+        when(resultSet.getDate("date")).thenReturn(java.sql.Date.valueOf(LocalDate.now()));
+        Array sqlArray = mock(Array.class);
+        when(sqlArray.getArray()).thenReturn(new Integer[]{1000, 2000});
+        when(resultSet.getArray("rankRange")).thenReturn(sqlArray);
+        when(resultSet.getString("status")).thenReturn("Open");
+        when(resultSet.getString("region")).thenReturn("Asia");
+        when(resultSet.getString("playerList")).thenReturn("invalid-json"); // Test invalid JSON
+        when(resultSet.getInt("round")).thenReturn(1);
+
+        Tournament result = tournamentRepo.mapRow(resultSet, 1);
+        assertNotNull(result);
+        assertTrue(result.getPlayerList().isEmpty());
+    }
 }

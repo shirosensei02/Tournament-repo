@@ -1,6 +1,7 @@
 package cs204.project;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -90,6 +91,36 @@ public class TournamentControllerTest {
     @Test
     public void joinTournament_ShouldReturn200() throws Exception {
         mockMvc.perform(post("/tournaments/1/player/2"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void updateTournament_ShouldReturnOk() throws Exception {
+        Tournament tournament = new Tournament();
+        tournament.setId(1L);
+        tournament.setName("Updated Tournament");
+        tournament.setDate(LocalDate.now());
+        tournament.setRankRange(new int[]{1000, 2000});
+        tournament.setStatus("Open");
+        tournament.setRegion("Asia");
+
+        when(tournamentService.updateTournament(eq(1L), any(Tournament.class))).thenReturn(tournament);
+
+        mockMvc.perform(put("/tournaments/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(tournament)))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void getPlayerTournaments_ShouldReturnList() throws Exception {
+        Tournament tournament = new Tournament();
+        tournament.setId(1L);
+        List<Tournament> tournaments = Arrays.asList(tournament);
+        
+        when(tournamentService.getPlayerJoinedTournaments(1L)).thenReturn(tournaments);
+
+        mockMvc.perform(get("/tournaments/player/1"))
                 .andExpect(status().isOk());
     }
 }

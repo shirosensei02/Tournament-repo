@@ -7,7 +7,7 @@ pool:
   name: 'Default'  # Replace with the exact name of your self-hosted agent pool
 
 steps:
-  # Step 1: Check out the repository
+  # Step 1: Check out the repository using the service connection
   - checkout: self
 
   # Step 2: Build with Maven (JDK 21 is already installed on the machine)
@@ -19,8 +19,7 @@ steps:
   - powershell: |
       az spring app deploy `
         --name tournament-service `
-        --service tournamnet-matchmaking `
+        --service tournament-matchmaking `  # Note: Corrected the typo "tournamnet" to "tournament" here.
         --resource-group cs203 `
         --artifact-path target/project-0.0.1-SNAPSHOT.jar
     displayName: 'Deploy to Azure Spring Apps'
-

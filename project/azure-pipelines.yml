@@ -9,10 +9,6 @@ pool:
 steps:
   # Step 1: Check out the repository using the service connection
   - checkout: self
-    name: 'Check out code'
-    persistCredentials: true  # Ensures that the credentials are persisted for any future Git operations
-    # Add the service connection explicitly if it's not the default connection
-    serviceConnection: github.com_Shirosensei  # Replace with the exact name of your GitHub service connection if necessary
 
   # Step 2: Build with Maven (JDK 21 is already installed on the machine)
   - script: |
